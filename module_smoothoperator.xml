@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_smoothoperator" default="compile.module.smoothoperator">
+  <dirname property="module.smoothoperator.basedir" file="${ant.file.module_smoothoperator}"/>
+  
+  <property name="module.jdk.home.smoothoperator" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.smoothoperator" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.smoothoperator" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.smoothoperator" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="smoothoperator.output.dir" value="${module.smoothoperator.basedir}/out/production/SmoothOperator"/>
+  <property name="smoothoperator.testoutput.dir" value="${module.smoothoperator.basedir}/out/test/SmoothOperator"/>
+  
+  <path id="smoothoperator.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="smoothoperator.module.production.classpath">
+    <path refid="${module.jdk.classpath.smoothoperator}"/>
+  </path>
+  
+  <path id="smoothoperator.runtime.production.module.classpath">
+    <pathelement location="${smoothoperator.output.dir}"/>
+  </path>
+  
+  <path id="smoothoperator.module.classpath">
+    <path refid="${module.jdk.classpath.smoothoperator}"/>
+    <pathelement location="${smoothoperator.output.dir}"/>
+  </path>
+  
+  <path id="smoothoperator.runtime.module.classpath">
+    <pathelement location="${smoothoperator.testoutput.dir}"/>
+    <pathelement location="${smoothoperator.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.smoothoperator">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.smoothoperator">
+    <patternset refid="excluded.from.module.smoothoperator"/>
+  </patternset>
+  
+  <path id="smoothoperator.module.sourcepath">
+    <dirset dir="${module.smoothoperator.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.smoothoperator" depends="compile.module.smoothoperator.production,compile.module.smoothoperator.tests" description="Compile module SmoothOperator"/>
+  
+  <target name="compile.module.smoothoperator.production" depends="register.custom.compilers" description="Compile module SmoothOperator; production classes">
+    <mkdir dir="${smoothoperator.output.dir}"/>
+    <javac2 destdir="${smoothoperator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.smoothoperator}/javac">
+      <compilerarg line="${compiler.args.smoothoperator}"/>
+      <bootclasspath refid="smoothoperator.module.bootclasspath"/>
+      <classpath refid="smoothoperator.module.production.classpath"/>
+      <src refid="smoothoperator.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.smoothoperator"/>
+    </javac2>
+    
+    <copy todir="${smoothoperator.output.dir}">
+      <fileset dir="${module.smoothoperator.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.smoothoperator.tests" depends="register.custom.compilers,compile.module.smoothoperator.production" description="compile module SmoothOperator; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.smoothoperator" description="cleanup module">
+    <delete dir="${smoothoperator.output.dir}"/>
+    <delete dir="${smoothoperator.testoutput.dir}"/>
+  </target>
+</project>

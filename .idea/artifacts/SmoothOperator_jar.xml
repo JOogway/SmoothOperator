@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SmoothOperator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SmoothOperator_jar</output-path>
+    <root id="archive" name="SmoothOperator.jar">
+      <element id="module-output" name="SmoothOperator" />
+    </root>
+  </artifact>
+</component>
